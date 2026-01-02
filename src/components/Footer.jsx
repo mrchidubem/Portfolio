@@ -55,7 +55,7 @@ const footerLinks = [
     links: [
       { path: "/blog", label: "Blog" },
       { path: "/docs", label: "Documentation" },
-      { path: "/certificate", label: "Certificate" },
+      { path: "/certificate", label: "Certificates" },
     ],
   },
   {
