@@ -1,0 +1,6 @@
+@import "tailwindcss";
+/* Optional: add your custom styles */
+
+@layer base {
+/* custom base styles go here */
+}
