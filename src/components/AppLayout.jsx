@@ -16,8 +16,8 @@ export default function Layout() {
 
       {/* Floating Resume Button — Desktop Only */}
       <motion.a
-        href="/resume/myresume.pdf"
-        download="myresume.pdf"
+        href="/resume/MyResume.pdf"
+        download="MyResume.pdf"
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.7, ease: "easeOut" }}

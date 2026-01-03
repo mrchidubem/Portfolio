@@ -1,31 +1,10 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { Canvas } from "@react-three/fiber";
 import { Stars, Sparkles, Float, OrbitControls } from "@react-three/drei";
 
-import {
-  SiReact,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiNodedotjs,
-  SiSupabase,
-  SiPostgresql,
-  SiDocker,
-  SiDjango,
-  SiPython,
-  SiC,
-  SiJavascript,
-  SiMysql,
-  SiExpress,
-  SiFigma,
-  SiCodesandbox as SiShadcn,
-  SiZap as SiN8n,
-  SiMongodb as SiMongoDB,
-  SiGit as SiGit,
-} from "react-icons/si";
-
-// Smooth Anchor Link (internal sections only)
+// ── Smooth Anchor Link (kept unchanged)
 const SmoothAnchorLink = ({ to, children, className }) => {
   const handleClick = (e) => {
     e.preventDefault();
@@ -46,16 +25,28 @@ const SmoothAnchorLink = ({ to, children, className }) => {
   );
 };
 
-export default function HomePage() {
-  // Lenis smooth scrolling
+// Animation variants (unchanged)
+const sectionReveal = {
+  initial: { opacity: 0, y: 50 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94] },
+};
+
+const heroReveal = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] },
+};
+
+export default function AboutPage() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.38,
+      duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      smoothTouch: false,
+      smoothTouch: true,
       syncTouch: true,
-      ignore: (event) => event.target.closest('a, [data-lenis-ignore]'),
     });
 
     window.lenis = lenis;
@@ -64,272 +55,196 @@ export default function HomePage() {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+
+    const rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       delete window.lenis;
     };
   }, []);
 
-  // 3D Scroll-Lift Tech Grid
-  const techRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: techRef,
-    offset: ["start 95%", "start 20%"],
-  });
-
-  const rotateX = useTransform(scrollYProgress, [0, 1], [90, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [200, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
-
-  const techItems = [
-    { name: "React 19", icon: <SiReact className="text-5xl mb-4 text-cyan-400" /> },
-    { name: "Next.js 15", icon: <SiNextdotjs className="text-5xl mb-4 text-gray-200" /> },
-    { name: "Tailwind v4", icon: <SiTailwindcss className="text-5xl mb-4 text-cyan-500" /> },
-    { name: "Node.js", icon: <SiNodedotjs className="text-5xl mb-4 text-green-500" /> },
-    { name: "Express", icon: <SiExpress className="text-5xl mb-4 text-gray-400" /> },
-    { name: "Django", icon: <SiDjango className="text-5xl mb-4 text-green-600" /> },
-    { name: "Git", icon: <SiGit className="text-5xl mb-4 text-orange-600" /> },
-    { name: "Python", icon: <SiPython className="text-5xl mb-4 text-blue-400" /> },
-    { name: "JavaScript", icon: <SiJavascript className="text-5xl mb-4 text-yellow-400" /> },
-    { name: "C", icon: <SiC className="text-5xl mb-4 text-blue-600" /> },
-    { name: "PostgreSQL", icon: <SiPostgresql className="text-5xl mb-4 text-blue-600" /> },
-    { name: "MySQL", icon: <SiMysql className="text-5xl mb-4 text-orange-500" /> },
-    { name: "Supabase", icon: <SiSupabase className="text-5xl mb-4 text-emerald-500" /> },
-    { name: "Docker", icon: <SiDocker className="text-5xl mb-4 text-blue-500" /> },
-    { name: "MongoDB", icon: <SiMongoDB className="text-5xl mb-4 text-green-500" /> },
-    { name: "Figma", icon: <SiFigma className="text-5xl mb-4 text-pink-500" /> },
-    { name: "Shadcn/UI", icon: <SiShadcn className="text-5xl mb-4 text-gray-300" /> },
-    { name: "n8n", icon: <SiN8n className="text-5xl mb-4 text-purple-500" /> },
-  ];
-
   return (
-    <div className="relative bg-gray-950 text-gray-100 overflow-hidden font-sans">
-      {/* BACKGROUND */}
+    <div className="relative bg-gray-950 text-gray-100 overflow-hidden min-h-screen">
+      {/* COSMIC BACKGROUND */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 140], fov: 75 }}>
           <color attach="background" args={["#0a0a0f"]} />
-          <Stars radius={300} depth={200} count={12000} factor={6} saturation={0} fade speed={0.4} />
-          <Sparkles count={600} scale={20} size={8} speed={0.6} color="#4b5563" opacity={0.6} />
-          <Float speed={1.4} rotationIntensity={0.6} floatIntensity={1.2}>
-            <mesh position={[0, 0, -60]}>
-              <icosahedronGeometry args={[30, 1]} />
-              <meshBasicMaterial color="#1f2937" wireframe opacity={0.25} transparent />
+          <Stars radius={300} depth={220} count={700} factor={3.5} saturation={0} fade speed={0.1} />
+          <Sparkles count={40} scale={12} size={4.5} speed={0.15} color="#4b5563" opacity={0.25} />
+          <Float speed={1.2} rotationIntensity={0.7} floatIntensity={1.2}>
+            <mesh position={[0, 0, -70]}>
+              <icosahedronGeometry args={[40, 1]} />
+              <meshBasicMaterial color="#1f2937" wireframe opacity={0.4} transparent />
             </mesh>
           </Float>
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.25} enableDamping dampingFactor={0.95} />
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={0.18}
+            enableDamping
+            dampingFactor={0.92}
+          />
         </Canvas>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-950/30 to-gray-950/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(31,41,55,0.15),transparent_70%)] pointer-events-none" />
+
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-950/60 to-gray-950/90 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(31,41,55,0.25),transparent_80%)] pointer-events-none" />
       </div>
 
-      {/* CONTENT */}
       <div className="relative z-10">
         {/* HERO */}
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-28">
-          <div className="max-w-7xl mx-auto text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 90, scale: 0.88 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1.3, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-none mb-6"
-            >
-              <span className="bg-gradient-to-r from-gray-300 via-gray-100 to-gray-400 bg-clip-text text-transparent">
-                Joseph Okafor
-              </span>
-            </motion.h1>
+        <section className="relative py-20 sm:py-40 px-6">
+          <motion.div {...heroReveal} className="max-w-7xl mx-auto text-center">
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent">
+              About Joseph Okafor
+            </h1>
+          </motion.div>
+        </section>
 
-            <motion.p
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 1 }}
-              className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mt-8 leading-relaxed font-light tracking-wide"
-            >
-              Electronic Engineer • Full-Stack Software Engineer • Blockchain Systems Builder
-              <br className="hidden sm:block" />
-              Designing resilient, high-scale systems trusted at global scale.
-            </motion.p>
+        {/* Background / Bio */}
+        <section id="background" className="pt-1 sm:pt-6 lg:pt-8 pb-16 sm:pb-20 lg:pb-24">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start lg:items-center">
+              <motion.div {...sectionReveal}>
+                <blockquote className="text-xl sm:text-2xl md:text-3xl font-extrabold italic text-gray-200 leading-tight mb-8 tracking-wide border-l-4 border-gray-600 pl-6">
+                  I design systems with longevity in mind, focusing on reliability, clarity, and infrastructure that continues to perform as complexity grows.
+                </blockquote>
 
-            {/* HERO BUTTONS - FIXED */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-14">
-              <a
-                href="/docs"
-                data-lenis-ignore
-                className="px-12 py-6 text-xl font-semibold tracking-tight bg-gradient-to-r from-gray-700 to-gray-800 rounded-xl hover:scale-105 hover:shadow-xl hover:shadow-gray-900/40 transition-all duration-300 cursor-pointer"
-              >
-                Explore Systems
-              </a>
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
+                  I’m Chidubem Okafor, a software engineer with an engineering mindset shaped by systems thinking, discipline, and long-term design.
+                  I approach software as infrastructure — something that must be reliable, understandable, and able to grow without breaking.
+                  My background in electronic engineering trained me to think in terms of components, failure modes, and efficiency,
+                  and I carry that same thinking into every system I build.
+                </p>
 
-              <a
-                href="/projects"
-                data-lenis-ignore
-                className="px-12 py-6 text-xl font-semibold tracking-tight border-2 border-gray-600 text-gray-300 rounded-xl hover:bg-gray-900/50 hover:scale-105 transition-all duration-300 cursor-pointer"
-              >
-                View Signature Projects
-              </a>
-            </div>
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-6">
+                  In short: I design and build reliable systems with clear architecture, focused on long-term scale and sustainability.
+                </p>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              transition={{ delay: 2.5 }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center"
-            >
-              <span className="text-gray-500 text-sm tracking-widest font-light mb-2">
-                SCROLL TO EXPLORE
-              </span>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="text-gray-500 text-2xl"
-              >
-                ↓
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-6">
+                  DubicVentures is my personal venture platform, applying disciplined engineering to durable digital products
+                  and long-term technology initiatives.
+                </p>
               </motion.div>
-            </motion.div>
+
+              {/* Philosophy cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {[
+                  { title: "Transparency", desc: "Clear systems, clear decisions, no black boxes." },
+                  { title: "Security", desc: "Strong defaults, zero-trust thinking, production-grade safety." },
+                  { title: "Clarity", desc: "Architecture that teams understand and trust." },
+                  { title: "Scale", desc: "Built to grow without rewrites or chaos." },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.title}
+                    {...sectionReveal}
+                    transition={{ ...sectionReveal.transition, delay: i * 0.12 }}
+                    className="bg-gray-900/70 backdrop-blur-lg border border-gray-800/60 rounded-2xl p-6 sm:p-8 text-center"
+                  >
+                    <h3 className="text-2xl font-bold text-gray-200 mb-4">{item.title}</h3>
+                    <p className="text-gray-400">{item.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* IMPACT MARQUEE */}
-        <div className="overflow-hidden py-10 bg-gray-950/60 border-t border-b border-gray-800/50">
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-            className="flex gap-32 whitespace-nowrap"
-          >
-            {[
-              "Node.js APIs @ 50k+ RPS",
-              "Django backends → 10M+ MAU",
-              "Real-time systems 1M+ concurrent",
-              "Optimized latency < 50ms p95",
-              "Zero-downtime migrations @ scale",
-              "Event-driven 500k+ msg/s",
-              "Horizontal scaling via K8s",
-              "40% faster queries via indexing",
-              "99.99% API uptime achieved",
-              "Monoliths to microservices success",
-            ].map((stat, i) => (
-              <span key={i} className="text-xl md:text-2xl font-medium text-gray-500/80 tracking-wider">
-                {stat}
-              </span>
-            ))}
-            {/* Duplicate for seamless loop */}
-            {[
-              "Node.js APIs @ 50k+ RPS",
-              "Django backends → 10M+ MAU",
-              "Real-time systems 1M+ concurrent",
-              "Optimized latency < 50ms p95",
-              "Zero-downtime migrations @ scale",
-              "Event-driven 500k+ msg/s",
-              "Horizontal scaling via K8s",
-              "40% faster queries via indexing",
-              "99.99% API uptime achieved",
-              "Monoliths to microservices success",
-            ].map((stat, i) => (
-              <span key={i + 10} className="text-xl md:text-2xl font-medium text-gray-500/80 tracking-wider">
-                {stat}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* CORE TECHNOLOGY GRID */}
-        <section id="projects" className="py-32 bg-gray-950/50 backdrop-blur-md border-t border-b border-gray-800">
-          <div className="max-w-7xl mx-auto px-6">
+        {/* PROFESSIONAL JOURNEY — UPDATED CONTENT ONLY */}
+        <section className="py-20 sm:py-28 lg:py-36">
+          <div className="max-w-6xl mx-auto px-5 sm:px-6">
             <motion.h2
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.9 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-8 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent tracking-tight leading-none"
+              {...sectionReveal}
+              className="text-5xl sm:text-6xl md:text-7xl font-black text-center mb-16 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent"
             >
-              Core Technologies I Master
+              Professional Journey
             </motion.h2>
 
-            <motion.p
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="text-center text-gray-400 mb-20 max-w-3xl mx-auto text-lg font-light tracking-wide leading-relaxed"
-            >
-              Selected for extreme performance, developer experience, and decade-long maintainability.
-            </motion.p>
+            <div className="relative">
+              <div className="absolute right-6 sm:right-10 md:left-1/2 md:-translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-transparent via-gray-600/60 to-transparent" />
 
-            <motion.div
-              ref={techRef}
-              style={{
-                rotateX,
-                y,
-                scale,
-                opacity,
-                perspective: 1200,
-              }}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8"
-            >
-              {techItems.map((tech, index) => (
+              {[
+                {
+                  year: "2017–2022",
+                  title: "Electronic Engineering",
+                  desc: "B.Eng (Second Class Upper), University of Nigeria, Nsukka. Built a strong foundation in systems thinking, hardware–software interaction, and disciplined problem solving.",
+                },
+                {
+                  year: "2021–2023",
+                  title: "Web Developer — Vivvaa Solutions",
+                  desc: "Delivered responsive websites and digital solutions for multiple client businesses. Translated designs into functional, scalable applications with strong UX and performance focus.",
+                },
+                {
+                  year: "2023–2024",
+                  title: "Software Engineer — Oneway",
+                  desc: "Developed backend services for scan-to-pay, inventory management, and POS integrations. Focused on secure, fast, and reliable transaction systems.",
+                },
+                {
+                  year: "2024–2025",
+                  title: "Software Engineer — IBX Exchange",
+                  desc: "Built and optimized scalable fintech systems. Improved performance by 30%, accelerated deployments, and delivered secure APIs for transactions and access control.",
+                },
+                {
+                  year: "2024",
+                  title: "Advanced Training",
+                  desc: "Completed Full-Stack MERN specialization at PLP Academy and the 3MTT Presidential Initiative, strengthening backend architecture, algorithms, and production engineering practices.",
+                },
+                {
+                  year: "Now",
+                  title: "DubicVentures",
+                  desc: "Founder & Engineer — applying disciplined, long-term engineering principles to scalable systems, infrastructure, and durable digital products.",
+                },
+              ].map((milestone, i) => (
                 <motion.div
-                  key={tech.name}
-                  initial={{ opacity: 0, rotateY: 30 }}
-                  whileInView={{ opacity: 1, rotateY: 0 }}
-                  viewport={{ once: false }}
-                  transition={{
-                    duration: 0.8,
-                    delay: index * 0.06,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  whileHover={{
-                    y: -20,
-                    scale: 1.15,
-                    rotateY: -15,
-                    z: 100,
-                    transition: { duration: 0.4 },
-                  }}
-                  className="bg-gray-900/70 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 flex flex-col items-center justify-center min-h-[170px] cursor-pointer shadow-2xl shadow-black/50"
+                  key={milestone.year}
+                  {...sectionReveal}
+                  transition={{ ...sectionReveal.transition, delay: i * 0.18 }}
+                  className="relative mb-16 last:mb-0"
                 >
-                  {tech.icon}
-                  <span className="mt-6 text-lg font-medium text-gray-200 tracking-wide">
-                    {tech.name}
-                  </span>
+                  <div
+                    className={`relative w-full md:w-5/12 ${
+                      i % 2 === 0
+                        ? "md:mr-auto md:pr-8 md:text-right"
+                        : "md:ml-auto md:pl-8 md:text-left"
+                    } bg-gray-900/80 border border-gray-800/70 rounded-2xl p-6 sm:p-8`}
+                  >
+                    <span className="text-xl font-bold text-gray-400 block mb-3">
+                      {milestone.year}
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-semibold mb-3 text-gray-100">
+                      {milestone.title}
+                    </h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      {milestone.desc}
+                    </p>
+                  </div>
+
+                  <div className="absolute top-1/2 -translate-y-1/2 right-0 md:left-1/2 md:-translate-x-1/2 w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-200 font-bold">
+                    {milestone.year === "Now" ? "→" : milestone.year.slice(-2)}
+                  </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* FINAL CTA */}
-        <section id="contact" className="py-40 text-center relative">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 1 }}
-            className="relative z-10 max-w-5xl mx-auto px-6"
-          >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent tracking-tight leading-tight">
-              Let’s Architect Something Legendary
+        <section className="py-24 text-center">
+          <motion.div {...sectionReveal} className="max-w-5xl mx-auto px-5">
+            <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
+              Let’s Build Something That Lasts
             </h2>
-
-            <p className="text-xl md:text-2xl text-gray-300 mb-16 font-light tracking-wide leading-relaxed">
-              Scale • Resilience • Strategic Impact
+            <p className="text-xl text-gray-200 mb-12">
+              If you need systems built with clarity, discipline, and long-term thinking — I’m ready.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-8 justify-center">
-              <a
-                href="/contact"
-                className="px-16 py-7 text-2xl font-semibold tracking-tight bg-gradient-to-r from-gray-700 to-gray-800 rounded-2xl shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300 cursor-pointer"
-              >
-                Start The Conversation
-              </a>
-
-              <a
-                href="/projects"
-                className="px-16 py-7 text-2xl font-semibold tracking-tight border-2 border-gray-600 text-gray-300 rounded-2xl hover:bg-gray-900/50 hover:scale-105 transition-all duration-300 cursor-pointer"
-              >
-                View Signature Projects
-              </a>
-            </div>
+            <a
+              href="/contact"
+              className="px-16 py-6 bg-gray-800 rounded-2xl text-2xl font-bold"
+            >
+              Start a Conversation
+            </a>
           </motion.div>
         </section>
       </div>
