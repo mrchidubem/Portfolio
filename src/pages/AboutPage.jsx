@@ -94,21 +94,21 @@ export default function AboutPage() {
       </div>
 
       <div className="relative z-10">
-        {/* HERO */}
-        <section className="relative py-20 sm:py-40 px-6">
+        {/* HERO - matched to homepage feel */}
+        <section className="relative py-28 sm:py-40 px-6">
           <motion.div {...heroReveal} className="max-w-7xl mx-auto text-center">
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent whitespace-nowrap">
               About Joseph Okafor
             </h1>
           </motion.div>
         </section>
 
-        {/* Background / Bio */}
-        <section id="background" className="pt-1 sm:pt-6 lg:pt-8 pb-16 sm:pb-20 lg:pb-24">
+        {/* Background / Bio - quote now closer to hero */}
+        <section id="background" className="pt-2 sm:pt-4 lg:pt-6 pb-12 sm:pb-20 lg:pb-24">
           <div className="max-w-7xl mx-auto px-5 sm:px-6">
-            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start lg:items-center">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start lg:items-center">
               <motion.div {...sectionReveal}>
-                <blockquote className="text-xl sm:text-2xl md:text-3xl font-extrabold italic text-gray-200 leading-tight mb-8 tracking-wide border-l-4 border-gray-600 pl-6">
+                <blockquote className="text-xl sm:text-2xl md:text-3xl font-extrabold italic text-gray-200 leading-tight mb-6 tracking-wide border-l-4 border-gray-600 pl-6">
                   I design systems with longevity in mind, focusing on reliability, clarity, and infrastructure that continues to perform as complexity grows.
                 </blockquote>
 
@@ -119,18 +119,18 @@ export default function AboutPage() {
                   and I carry that same thinking into every system I build.
                 </p>
 
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-6">
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-5">
                   In short: I design and build reliable systems with clear architecture, focused on long-term scale and sustainability.
                 </p>
 
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-6">
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-5">
                   DubicVentures is my personal venture platform, applying disciplined engineering to durable digital products
                   and long-term technology initiatives.
                 </p>
               </motion.div>
 
               {/* Philosophy cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8 lg:mt-0">
                 {[
                   { title: "Transparency", desc: "Clear systems, clear decisions, no black boxes." },
                   { title: "Security", desc: "Strong defaults, zero-trust thinking, production-grade safety." },
@@ -152,12 +152,12 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* PROFESSIONAL JOURNEY — UPDATED CONTENT ONLY */}
-        <section className="py-20 sm:py-28 lg:py-36">
+        {/* PROFESSIONAL JOURNEY */}
+        <section className="py-16 sm:py-28 lg:py-36">
           <div className="max-w-6xl mx-auto px-5 sm:px-6">
             <motion.h2
               {...sectionReveal}
-              className="text-5xl sm:text-6xl md:text-7xl font-black text-center mb-16 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center mb-12 sm:mb-16 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent"
             >
               Professional Journey
             </motion.h2>
@@ -201,7 +201,7 @@ export default function AboutPage() {
                   key={milestone.year}
                   {...sectionReveal}
                   transition={{ ...sectionReveal.transition, delay: i * 0.18 }}
-                  className="relative mb-16 last:mb-0"
+                  className="relative mb-12 sm:mb-16 last:mb-0"
                 >
                   <div
                     className={`relative w-full md:w-5/12 ${
@@ -210,18 +210,18 @@ export default function AboutPage() {
                         : "md:ml-auto md:pl-8 md:text-left"
                     } bg-gray-900/80 border border-gray-800/70 rounded-2xl p-6 sm:p-8`}
                   >
-                    <span className="text-xl font-bold text-gray-400 block mb-3">
+                    <span className="text-lg sm:text-xl font-bold text-gray-400 block mb-3">
                       {milestone.year}
                     </span>
-                    <h3 className="text-2xl sm:text-3xl font-semibold mb-3 text-gray-100">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-3 text-gray-100">
                       {milestone.title}
                     </h3>
-                    <p className="text-gray-300 leading-relaxed">
+                    <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
                       {milestone.desc}
                     </p>
                   </div>
 
-                  <div className="absolute top-1/2 -translate-y-1/2 right-0 md:left-1/2 md:-translate-x-1/2 w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-200 font-bold">
+                  <div className="absolute top-1/2 -translate-y-1/2 right-0 md:left-1/2 md:-translate-x-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-800 flex items-center justify-center text-gray-200 font-bold text-sm sm:text-base">
                     {milestone.year === "Now" ? "→" : milestone.year.slice(-2)}
                   </div>
                 </motion.div>
@@ -230,18 +230,18 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* FINAL CTA */}
-        <section className="py-24 text-center">
+        {/* FINAL CTA - reduced on mobile */}
+        <section className="py-16 sm:py-24 text-center">
           <motion.div {...sectionReveal} className="max-w-5xl mx-auto px-5">
-            <h2 className="text-5xl font-black mb-8 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
+            <h2 className="text-4xl sm:text-5xl font-black mb-6 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
               Let’s Build Something That Lasts
             </h2>
-            <p className="text-xl text-gray-200 mb-12">
+            <p className="text-lg sm:text-xl text-gray-200 mb-8 sm:mb-12">
               If you need systems built with clarity, discipline, and long-term thinking — I’m ready.
             </p>
             <a
               href="/contact"
-              className="px-16 py-6 bg-gray-800 rounded-2xl text-2xl font-bold"
+              className="px-12 sm:px-16 py-5 sm:py-6 bg-gray-800 rounded-2xl text-xl sm:text-2xl font-bold hover:bg-gray-700 transition-colors"
             >
               Start a Conversation
             </a>

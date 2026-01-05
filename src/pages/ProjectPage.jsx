@@ -169,11 +169,10 @@ export default function ProjectsPage() {
 
   return (
     <div className="relative bg-gray-950 text-gray-100 overflow-hidden">
-      {/* FIXED COSMIC BACKGROUND — Exact same as final Homepage (drastically reduced particles + strong mirror) */}
+      {/* FIXED COSMIC BACKGROUND */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 140], fov: 75 }}>
           <color attach="background" args={["#0a0a0f"]} />
-          {/* Drastically reduced stars */}
           <Stars
             radius={300}
             depth={200}
@@ -183,7 +182,6 @@ export default function ProjectsPage() {
             fade
             speed={0.15}
           />
-          {/* Drastically reduced sparkles */}
           <Sparkles
             count={40}
             scale={12}
@@ -192,7 +190,6 @@ export default function ProjectsPage() {
             color="#4b5563"
             opacity={0.25}
           />
-          {/* Central geometry — strong "mirror" focal point */}
           <Float speed={1.4} rotationIntensity={0.8} floatIntensity={1.4}>
             <mesh position={[0, 0, -60]}>
               <icosahedronGeometry args={[35, 1]} />
@@ -214,7 +211,6 @@ export default function ProjectsPage() {
           />
         </Canvas>
 
-        {/* Strong mirror depth */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-950/40 to-gray-950/80 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(31,41,55,0.25),transparent_70%)] pointer-events-none" />
       </div>
@@ -222,7 +218,7 @@ export default function ProjectsPage() {
       {/* SCROLLABLE CONTENT */}
       <div className="relative z-10">
 
-        {/* Hero */}
+        {/* Hero - reverted to original */}
         <section className="relative py-40 px-6">
           <motion.div {...sectionReveal} className="max-w-7xl mx-auto text-center">
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent">
@@ -234,15 +230,15 @@ export default function ProjectsPage() {
           </motion.div>
         </section>
 
-        {/* Filter */}
+        {/* Filter - mobile friendly */}
         <section className="sticky top-0 z-40 bg-gray-950/80 backdrop-blur-lg border-b border-gray-800">
-          <div className="max-w-7xl mx-auto px-6 py-5">
-            <div className="flex flex-wrap gap-3 justify-center">
+          <div className="max-w-7xl mx-auto px-6 py-4 sm:py-5">
+            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center overflow-x-auto pb-2 scrollbar-hide">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setFilter(cat.id)}
-                  className={`px-6 py-2.5 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-5 sm:px-6 py-2 rounded-full text-sm font-medium transition-colors flex-shrink-0 ${
                     filter === cat.id
                       ? 'bg-gray-800/80 text-gray-100 border border-gray-700/70'
                       : 'text-gray-500 hover:text-gray-300'
@@ -255,10 +251,10 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        {/* Projects */}
-        <section className="py-20 px-6">
+        {/* Projects - reduced vertical spacing on mobile */}
+        <section className="py-12 sm:py-20 px-6">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <AnimatePresence mode="popLayout">
                 {filteredProjects.map((project, i) => (
                   <motion.div
@@ -271,39 +267,38 @@ export default function ProjectsPage() {
                     className="group relative rounded-2xl border border-gray-800/60 bg-gray-900/70 backdrop-blur-sm overflow-hidden transition-all duration-700 hover:border-gray-600/70 hover:bg-gray-900/80"
                     whileHover={{ y: -12 }}
                   >
-                    {/* Subtle inner glow on hover */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
                       <div className="absolute inset-0 bg-gradient-to-br from-gray-800/5 via-transparent to-gray-900/5" />
                       <div className="absolute -inset-1 bg-gradient-to-br from-gray-700/10 via-transparent to-gray-800/10 blur-xl" />
                     </div>
 
-                    <div className="h-44 bg-gradient-to-b from-gray-900 to-gray-950 flex items-center justify-center relative">
-                      <span className="text-5xl font-black text-gray-700/60 group-hover:text-gray-500/70 transition-colors duration-700">
+                    <div className="h-40 sm:h-44 bg-gradient-to-b from-gray-900 to-gray-950 flex items-center justify-center relative">
+                      <span className="text-4xl sm:text-5xl font-black text-gray-700/60 group-hover:text-gray-500/70 transition-colors duration-700">
                         {project.title.split(' ')[0]}
                       </span>
                     </div>
 
-                    <div className="p-7 relative">
-                      <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-xl font-semibold text-gray-200 group-hover:text-gray-100 transition-colors duration-500">
+                    <div className="p-5 sm:p-7 relative">
+                      <div className="flex justify-between items-start mb-3 sm:mb-4">
+                        <h3 className="text-lg sm:text-xl font-semibold text-gray-200 group-hover:text-gray-100 transition-colors duration-500">
                           {project.title}
                         </h3>
                         {project.featured && (
-                          <span className="text-xs px-2.5 py-1 bg-gray-800/80 text-gray-400 border border-gray-700 rounded">
+                          <span className="text-xs px-2 py-1 bg-gray-800/80 text-gray-400 border border-gray-700 rounded">
                             Featured
                           </span>
                         )}
                       </div>
 
-                      <p className="text-gray-400 text-base mb-6 line-clamp-3 group-hover:line-clamp-none transition-all duration-500">
+                      <p className="text-gray-400 text-sm sm:text-base mb-4 sm:mb-6 line-clamp-3 group-hover:line-clamp-none transition-all duration-500">
                         {project.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-2 mb-6">
+                      <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
                         {project.tech.map((t) => (
                           <div
                             key={t}
-                            className="px-3 py-1 bg-gray-800/60 border border-gray-700/50 rounded-full text-xs text-gray-300"
+                            className="px-2.5 sm:px-3 py-1 bg-gray-800/60 border border-gray-700/50 rounded-full text-xs text-gray-300"
                           >
                             {t}
                           </div>
@@ -336,20 +331,20 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-32 text-center">
+        {/* CTA - reduced on mobile */}
+        <section className="py-20 sm:py-32 text-center">
           <motion.div {...sectionReveal} className="max-w-5xl mx-auto px-6">
-            <h2 className="text-5xl md:text-6xl font-black mb-8 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent">
               Ready for Serious Architecture?
             </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto">
               High-scale infrastructure • Long-term maintainability • Zero-compromise performance
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <a
                 href="/contact"
-                className="px-12 py-5 bg-gradient-to-r from-gray-700 to-gray-800 rounded-xl font-medium text-gray-200 shadow-lg shadow-gray-900/30 hover:shadow-gray-700/50 transition-all"
+                className="px-10 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-gray-700 to-gray-800 rounded-xl font-medium text-gray-200 shadow-lg shadow-gray-900/30 hover:shadow-gray-700/50 transition-all"
               >
                 Start Conversation
               </a>
@@ -357,7 +352,7 @@ export default function ProjectsPage() {
                 href="https://github.com/mrchidubem"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-12 py-5 border border-gray-700 text-gray-400 rounded-xl font-medium hover:bg-gray-800/50 transition-all"
+                className="px-10 sm:px-12 py-4 sm:py-5 border border-gray-700 text-gray-400 rounded-xl font-medium hover:bg-gray-800/50 transition-all"
               >
                 GitHub
               </a>

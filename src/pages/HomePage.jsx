@@ -72,17 +72,40 @@ export default function HomePage() {
     };
   }, []);
 
-  // 3D Scroll-Lift Tech Grid
+  // 3D Scroll-Lift Tech Grid (with mobile adjustment)
   const techRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: techRef,
     offset: ["start 95%", "start 20%"],
   });
 
-  const rotateX = useTransform(scrollYProgress, [0, 1], [90, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [200, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+  const rotateX = useTransform(scrollYProgress, [0, 1], isMobile ? [90, 0] : [90, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [200, 0] : [200, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [0.8, 1] : [0.8, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], isMobile ? [0.3, 1] : [0.3, 1]);
+
+  const mobileOffset = useScroll({
+    target: techRef,
+    offset: isMobile ? ["start 100%", "start 35%"] : ["start 95%", "start 20%"],
+  }).scrollYProgress;
+
+  const rotateXMobileAdjusted = isMobile 
+    ? useTransform(mobileOffset, [0, 1], [90, 0]) 
+    : rotateX;
+  
+  const yMobileAdjusted = isMobile 
+    ? useTransform(mobileOffset, [0, 1], [200, 0]) 
+    : y;
+  
+  const scaleMobileAdjusted = isMobile 
+    ? useTransform(mobileOffset, [0, 1], [0.8, 1]) 
+    : scale;
+  
+  const opacityMobileAdjusted = isMobile 
+    ? useTransform(mobileOffset, [0, 1], [0.3, 1]) 
+    : opacity;
 
   const techItems = [
     { name: "React 19", icon: <SiReact className="text-5xl mb-4 text-cyan-400" /> },
@@ -133,7 +156,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 90, scale: 0.88 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 1.3, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-none mb-6"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-none mb-6 whitespace-nowrap"
             >
               <span className="bg-gradient-to-r from-gray-300 via-gray-100 to-gray-400 bg-clip-text text-transparent">
                 Joseph Okafor
@@ -241,10 +264,10 @@ export default function HomePage() {
             <motion.div
               ref={techRef}
               style={{
-                rotateX,
-                y,
-                scale,
-                opacity,
+                rotateX: rotateXMobileAdjusted,
+                y: yMobileAdjusted,
+                scale: scaleMobileAdjusted,
+                opacity: opacityMobileAdjusted,
                 perspective: 1200,
               }}
               className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8"
@@ -279,8 +302,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FINAL CTA */}
-        <section id="contact" className="py-40 text-center relative">
+        {/* FINAL CTA - reduced vertical padding on mobile */}
+        <section id="contact" className="py-24 md:py-40 text-center relative">
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
