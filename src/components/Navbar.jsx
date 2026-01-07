@@ -97,7 +97,7 @@ const Navbar = () => {
 
               {/* MOBILE RESUME BUTTON */}
               <a
-                href="/resume/myresume.pdf"
+                href="/resume/Joseph-Resume.pdf"
                 download
                 onClick={() => setIsOpen(false)}
                 className="block mt-4 px-5 py-4 rounded-xl text-lg font-semibold
