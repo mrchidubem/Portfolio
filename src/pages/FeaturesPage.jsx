@@ -7,16 +7,16 @@ import { Stars, Sparkles, Float, OrbitControls } from "@react-three/drei";
 // Premium smooth ease
 const ease = [0.25, 0.46, 0.45, 0.94];
 
-// Card entrance variants - same elite staggered animation as Projects/Blog
+// Softer card entrance
 const cardVariants = {
-  hidden: { opacity: 0, y: 60 },
+  hidden: { opacity: 0, y: 50 },
   visible: (i) => ({
     opacity: 1,
     y: 0,
     transition: {
-      duration: 1.0,
+      duration: 0.8,
       ease,
-      delay: i * 0.12,
+      delay: i * 0.07, // tighter stagger = faster appearance
     }
   }),
 };
@@ -55,13 +55,12 @@ const features = [
 ];
 
 export default function FeaturesPage() {
-  // Same ultra-smooth Lenis as every elite page
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.38,
+      duration: 1.12, // ← ultra-smooth & responsive (same as all other pages)
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      smoothTouch: false,
+      smoothTouch: true,
       syncTouch: true,
     });
 
@@ -81,8 +80,8 @@ export default function FeaturesPage() {
   }, []);
 
   return (
-    <div className="relative bg-gray-950 text-gray-100 overflow-hidden">
-      {/* FIXED COSMIC BACKGROUND — Exact same as final Homepage */}
+    <div className="relative bg-gray-950 text-gray-100 overflow-hidden min-h-screen">
+      {/* FIXED COSMIC BACKGROUND */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 140], fov: 75 }}>
           <color attach="background" args={["#0a0a0f"]} />
@@ -130,15 +129,15 @@ export default function FeaturesPage() {
 
       {/* SCROLLABLE CONTENT */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-40">
-        {/* Hero */}
+        {/* Hero – forced one line */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-80px", amount: 0.25 }}
-          transition={{ duration: 0.9, ease }}
+          transition={{ duration: 0.85, ease }}
           className="text-center mb-20"
         >
-          <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-6">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-6 whitespace-nowrap">
             Core Features
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
@@ -146,46 +145,58 @@ export default function FeaturesPage() {
           </p>
         </motion.div>
 
-        {/* Feature Cards - exact same animation + hover as Projects page */}
+        {/* Feature Cards – soft, stable hover (no transform jumping) */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                layout
-                custom={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, margin: "-80px", amount: 0.3 }}
-                variants={cardVariants}
-                className="group relative rounded-3xl overflow-hidden border backdrop-blur-sm bg-gray-900/70 border-gray-800/50"
-                whileHover={{
-                  y: -16,
-                  borderColor: 'rgba(75, 85, 99, 0.4)',
-                  boxShadow: '0 15px 30px -10px rgba(75, 85, 99, 0.15)'
-                }}
-                transition={{ duration: 0.7, ease }}
-              >
-                {/* Subtle inner glow on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-800/5 via-transparent to-gray-900/5" />
-                  <div className="absolute -inset-1 bg-gradient-to-br from-gray-700/10 via-transparent to-gray-800/10 blur-xl" />
-                </div>
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, margin: "-80px" }}
+              custom={index}
+              variants={cardVariants}
+              className={`
+                group relative rounded-3xl overflow-hidden 
+                bg-gray-900/65 backdrop-blur-md 
+                border border-gray-800/50 
+                p-8 md:p-10 
+                transition-all duration-500 ease-out
+                hover:bg-gray-900/80 
+                hover:border-gray-600/70 
+                hover:shadow-xl hover:shadow-black/30
+              `}
+              style={{
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                willChange: 'background-color, border-color, box-shadow',
+              }}
+            >
+              {/* Subtle shine overlay */}
+              <div 
+                className="
+                  absolute inset-0 
+                  bg-gradient-to-br from-white/5 to-transparent 
+                  opacity-0 
+                  group-hover:opacity-100 
+                  transition-opacity duration-700 
+                  pointer-events-none
+                " 
+              />
 
-                <div className="p-10 flex flex-col h-full">
-                  <div className="text-6xl mb-6 opacity-80 group-hover:opacity-100 transition-opacity">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-gray-300 transition-colors duration-500">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-400 text-lg leading-relaxed flex-grow">
-                    {feature.description}
-                  </p>
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="text-6xl mb-6 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                  {feature.icon}
                 </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-200 group-hover:text-white transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-400 text-lg leading-relaxed flex-grow group-hover:text-gray-300 transition-colors duration-300">
+                  {feature.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* CTA */}
@@ -193,7 +204,7 @@ export default function FeaturesPage() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-80px", amount: 0.25 }}
-          transition={{ duration: 0.9, ease }}
+          transition={{ duration: 0.85, ease }}
           className="mt-32 text-center"
         >
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto">
@@ -201,7 +212,14 @@ export default function FeaturesPage() {
           </p>
           <a
             href="/contact"
-            className="inline-block bg-gradient-to-r from-gray-700 to-gray-800 px-12 py-6 rounded-2xl text-xl font-bold shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300"
+            className="
+              inline-block bg-gradient-to-r from-gray-700 to-gray-800 
+              px-10 sm:px-12 py-5 sm:py-6 
+              rounded-2xl text-lg sm:text-xl 
+              font-bold shadow-xl shadow-gray-900/40 
+              hover:shadow-2xl hover:shadow-gray-800/60 
+              hover:scale-105 transition-all duration-300
+            "
           >
             Request Access
           </a>

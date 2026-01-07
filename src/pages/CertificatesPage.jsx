@@ -5,7 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { Stars, Sparkles, Float, OrbitControls } from "@react-three/drei";
 import emailjs from '@emailjs/browser';
 
-// ── Smooth Anchor Link (not used here, but kept for consistency)
+// ── Smooth Anchor Link (kept for consistency)
 const SmoothAnchorLink = ({ to, children, className }) => {
   const handleClick = (e) => {
     e.preventDefault();
@@ -26,12 +26,12 @@ const SmoothAnchorLink = ({ to, children, className }) => {
   );
 };
 
-// Softer fade-in for mobile performance
+// Softer & faster fade-in
 const fadeInUp = {
-  initial: { y: 50, opacity: 0 },
+  initial: { y: 40, opacity: 0 },
   whileInView: { y: 0, opacity: 1 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 export default function CertificatesPage() {
@@ -41,26 +41,22 @@ export default function CertificatesPage() {
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
-  // Open modal for a specific certificate
   const openModal = (cert) => {
     setSelectedCert(cert);
     setModalOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setModalOpen(false);
     setFormData({ name: "", email: "" });
     setSelectedCert(null);
   };
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle EmailJS request
   const handleRequest = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email) {
@@ -82,10 +78,9 @@ export default function CertificatesPage() {
       );
 
       console.log('EmailJS Success:', response.status, response.text);
-      setShowSuccessToast(true); // Show beautiful toast
+      setShowSuccessToast(true);
       closeModal();
 
-      // Auto-hide toast after 4 seconds
       setTimeout(() => setShowSuccessToast(false), 4000);
     } catch (error) {
       console.error('EmailJS Error:', error);
@@ -97,7 +92,7 @@ export default function CertificatesPage() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.35,
+      duration: 1.12,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: true,
@@ -119,7 +114,6 @@ export default function CertificatesPage() {
     };
   }, []);
 
-  // Certificates + Most Important Degree at the top (PLP split into separate card)
   const certificates = [
     { 
       name: "Bachelor of Engineering in Electronic Engineering", 
@@ -170,9 +164,8 @@ export default function CertificatesPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(31,41,55,0.2),transparent_75%)] pointer-events-none" />
       </div>
 
-      {/* SCROLLABLE CONTENT */}
+      {/* MAIN CONTENT */}
       <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
-
         {/* Hero */}
         <motion.div {...fadeInUp} className="text-center mb-12 sm:mb-16 lg:mb-20">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-4 sm:mb-6 tracking-tighter">
@@ -183,46 +176,83 @@ export default function CertificatesPage() {
           </p>
         </motion.div>
 
-        {/* Certificates Grid */}
-        <motion.div {...fadeInUp} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {/* Certificates Grid – ultra soft hover, no transform, no scaling, no jumping */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {certificates.map((cert, i) => (
             <motion.div
               key={cert.key}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              className={`group bg-gray-900/70 backdrop-blur-md border border-gray-800/60 rounded-2xl p-6 sm:p-7 lg:p-8 hover:border-gray-600/70 transition-all duration-300 flex flex-col h-full ${
-                cert.highlight ? "ring-2 ring-gray-400/50 shadow-xl shadow-gray-900/40" : ""
-              }`}
+              transition={{ delay: i * 0.05, duration: 0.7 }}
+              viewport={{ once: true }}
+              className={`
+                group relative 
+                bg-gray-900/60 backdrop-blur-md 
+                border border-gray-800/50 rounded-2xl 
+                p-6 sm:p-7 lg:p-8 
+                overflow-hidden
+                transition-all duration-500 ease-out
+                hover:bg-gray-900/80 
+                hover:border-gray-600/70 
+                hover:shadow-xl hover:shadow-black/30
+                ${cert.highlight ? "border-gray-500/40 shadow-lg shadow-gray-900/40" : ""}
+              `}
+              style={{
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                willChange: 'background-color, border-color, box-shadow, opacity',
+              }}
             >
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-300 mb-2 sm:mb-3 group-hover:text-gray-200 transition-colors">
-                {cert.name}
-              </h3>
-              <p className="text-sm sm:text-base text-gray-400 mb-1">
-                Issued by {cert.issuer}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">
-                {cert.date}
-              </p>
-              <div className="mt-auto">
-                <button
-                  onClick={() => openModal(cert)}
-                  className="inline-flex items-center gap-2 text-sm sm:text-base font-medium text-gray-400 group-hover:text-gray-300 transition-colors"
-                >
-                  Request Document
-                  <motion.span whileHover={{ x: 6 }} transition={{ duration: 0.4 }}>→</motion.span>
-                </button>
+              <div className="h-full flex flex-col relative z-10">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-200 mb-2 sm:mb-3 transition-colors duration-300 group-hover:text-white">
+                  {cert.name}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-400 mb-1 transition-colors duration-300 group-hover:text-gray-300">
+                  Issued by {cert.issuer}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-500 mb-5 sm:mb-7 transition-colors duration-300 group-hover:text-gray-400">
+                  {cert.date}
+                </p>
+                <div className="mt-auto">
+                  <button
+                    onClick={() => openModal(cert)}
+                    className="
+                      inline-flex items-center gap-2 
+                      text-sm sm:text-base 
+                      font-medium 
+                      text-gray-400 
+                      group-hover:text-gray-200 
+                      transition-colors duration-300
+                    "
+                  >
+                    Request Document
+                    <span className="transition-transform duration-300 group-hover:translate-x-1 inline-block">→</span>
+                  </button>
+                </div>
               </div>
+
+              {/* Very subtle shine overlay on hover - no performance hit */}
+              <div 
+                className="
+                  absolute inset-0 
+                  bg-gradient-to-br from-white/5 to-transparent 
+                  opacity-0 
+                  group-hover:opacity-100 
+                  transition-opacity duration-700 
+                  pointer-events-none
+                " 
+              />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Final CTA */}
+        {/* Final CTA – mobile friendly */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-16 sm:mt-20 lg:mt-32 text-center"
         >
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
@@ -230,7 +260,7 @@ export default function CertificatesPage() {
           </p>
           <a
             href="/contact"
-            className="inline-block bg-gradient-to-r from-gray-700 to-gray-800 px-10 sm:px-16 py-5 sm:py-7 rounded-2xl text-lg sm:text-2xl font-bold shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300"
+            className="inline-block bg-gradient-to-r from-gray-700 to-gray-800 px-8 sm:px-16 py-4 sm:py-7 rounded-2xl text-base sm:text-2xl font-bold shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300"
           >
             Request Security Package
           </a>
@@ -241,21 +271,22 @@ export default function CertificatesPage() {
       {modalOpen && selectedCert && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="bg-gray-900 rounded-2xl p-8 w-full max-w-md text-gray-100 relative"
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.4 }}
+            className="bg-gray-900 rounded-2xl p-6 sm:p-8 w-full max-w-md text-gray-100 relative"
           >
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl"
+              className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
             >
               ×
             </button>
 
-            <h2 className="text-2xl font-bold mb-6">{selectedCert.name}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-6">{selectedCert.name}</h2>
 
-            <form onSubmit={handleRequest} className="space-y-6">
+            <form onSubmit={handleRequest} className="space-y-5 sm:space-y-6">
               <div>
                 <label className="block mb-2 text-sm">Your Name *</label>
                 <input
@@ -284,14 +315,14 @@ export default function CertificatesPage() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors"
+                  className="px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors text-sm sm:text-base"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors ${
+                  className={`px-6 py-3 rounded-lg font-semibold text-white transition-colors text-sm sm:text-base ${
                     loading ? 'bg-gray-600 cursor-not-allowed' : 'bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700'
                   }`}
                 >
@@ -303,17 +334,17 @@ export default function CertificatesPage() {
         </div>
       )}
 
-      {/* Beautiful Success Toast (floating bottom) */}
+      {/* Success Toast */}
       {showSuccessToast && (
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
           transition={{ duration: 0.5 }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-full shadow-2xl shadow-green-900/50 flex items-center gap-3"
+          className="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-2xl shadow-green-900/50 flex items-center gap-3 text-sm sm:text-base"
         >
-          <div className="text-2xl">✓</div>
-          <p className="font-medium">Request sent successfully! We'll get back to you soon.</p>
+          <div className="text-xl sm:text-2xl">✓</div>
+          <p className="font-medium">Request sent successfully! We'll get back soon.</p>
         </motion.div>
       )}
     </div>

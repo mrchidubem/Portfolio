@@ -4,7 +4,7 @@ import Lenis from "@studio-freight/lenis";
 import { Canvas } from "@react-three/fiber";
 import { Stars, Sparkles, Float, OrbitControls } from "@react-three/drei";
 
-// ── Smooth Anchor Link (kept unchanged)
+// ── Smooth Anchor Link (unchanged)
 const SmoothAnchorLink = ({ to, children, className }) => {
   const handleClick = (e) => {
     e.preventDefault();
@@ -25,24 +25,24 @@ const SmoothAnchorLink = ({ to, children, className }) => {
   );
 };
 
-// Animation variants (unchanged)
+// Slightly faster & smoother reveal variants
 const sectionReveal = {
-  initial: { opacity: 0, y: 50 },
+  initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 1.1, ease: [0.25, 0.46, 0.45, 0.94] },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 const heroReveal = {
-  initial: { opacity: 0, y: 60 },
+  initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] },
+  transition: { duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
 export default function AboutPage() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.12,           // ← same as optimized homepage – very smooth & responsive
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: true,
@@ -67,7 +67,7 @@ export default function AboutPage() {
 
   return (
     <div className="relative bg-gray-950 text-gray-100 overflow-hidden min-h-screen">
-      {/* COSMIC BACKGROUND */}
+      {/* COSMIC BACKGROUND – slightly optimized for performance */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 140], fov: 75 }}>
           <color attach="background" args={["#0a0a0f"]} />
@@ -94,8 +94,8 @@ export default function AboutPage() {
       </div>
 
       <div className="relative z-10">
-        {/* HERO - matched to homepage feel */}
-        <section className="relative py-28 sm:py-40 px-6">
+        {/* HERO */}
+        <section className="relative py-24 sm:py-40 px-6">
           <motion.div {...heroReveal} className="max-w-7xl mx-auto text-center">
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent whitespace-nowrap">
               About Joseph Okafor
@@ -103,34 +103,34 @@ export default function AboutPage() {
           </motion.div>
         </section>
 
-        {/* Background / Bio - quote now closer to hero */}
-        <section id="background" className="pt-2 sm:pt-4 lg:pt-6 pb-12 sm:pb-20 lg:pb-24">
+        {/* Background / Bio */}
+        <section id="background" className="pt-4 sm:pt-8 lg:pt-12 pb-16 sm:pb-24 lg:pb-32">
           <div className="max-w-7xl mx-auto px-5 sm:px-6">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start lg:items-center">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start lg:items-center">
               <motion.div {...sectionReveal}>
-                <blockquote className="text-xl sm:text-2xl md:text-3xl font-extrabold italic text-gray-200 leading-tight mb-6 tracking-wide border-l-4 border-gray-600 pl-6">
+                <blockquote className="text-xl sm:text-2xl md:text-3xl font-extrabold italic text-gray-200 leading-tight mb-8 tracking-wide border-l-4 border-gray-600 pl-6">
                   I design systems with longevity in mind, focusing on reliability, clarity, and infrastructure that continues to perform as complexity grows.
                 </blockquote>
 
                 <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
                   I’m Chidubem Okafor, a software engineer with an engineering mindset shaped by systems thinking, discipline, and long-term design.
-                  I approach software as infrastructure — something that must be reliable, understandable, and able to grow without breaking.
-                  My background in electronic engineering trained me to think in terms of components, failure modes, and efficiency,
-                  and I carry that same thinking into every system I build.
                 </p>
 
                 <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-5">
-                  In short: I design and build reliable systems with clear architecture, focused on long-term scale and sustainability.
+                  My background in electronic engineering trained me to think in terms of components, failure modes, and efficiency — and I carry that same rigor into software architecture.
                 </p>
 
                 <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-5">
-                  DubicVentures is my personal venture platform, applying disciplined engineering to durable digital products
-                  and long-term technology initiatives.
+                  In short: I build reliable, understandable systems designed to scale and last.
+                </p>
+
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mt-5">
+                  DubicVentures is my platform for applying disciplined engineering to durable digital products and long-term initiatives.
                 </p>
               </motion.div>
 
-              {/* Philosophy cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8 lg:mt-0">
+              {/* Philosophy cards – faster stagger */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 lg:mt-0">
                 {[
                   { title: "Transparency", desc: "Clear systems, clear decisions, no black boxes." },
                   { title: "Security", desc: "Strong defaults, zero-trust thinking, production-grade safety." },
@@ -140,7 +140,7 @@ export default function AboutPage() {
                   <motion.div
                     key={item.title}
                     {...sectionReveal}
-                    transition={{ ...sectionReveal.transition, delay: i * 0.12 }}
+                    transition={{ ...sectionReveal.transition, delay: i * 0.1 }}
                     className="bg-gray-900/70 backdrop-blur-lg border border-gray-800/60 rounded-2xl p-6 sm:p-8 text-center"
                   >
                     <h3 className="text-2xl font-bold text-gray-200 mb-4">{item.title}</h3>
@@ -152,8 +152,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* PROFESSIONAL JOURNEY */}
-        <section className="py-16 sm:py-28 lg:py-36">
+        {/* PROFESSIONAL JOURNEY – progressive reveal */}
+        <section className="py-20 sm:py-28 lg:py-36">
           <div className="max-w-6xl mx-auto px-5 sm:px-6">
             <motion.h2
               {...sectionReveal}
@@ -172,12 +172,12 @@ export default function AboutPage() {
                   desc: "B.Eng (Second Class Upper), University of Nigeria, Nsukka. Built a strong foundation in systems thinking, hardware–software interaction, and disciplined problem solving.",
                 },
                 {
-                  year: "2021–2023",
+                  year: "2021–2024",
                   title: "Web Developer — Vivvaa Solutions",
                   desc: "Delivered responsive websites and digital solutions for multiple client businesses. Translated designs into functional, scalable applications with strong UX and performance focus.",
                 },
                 {
-                  year: "2023–2024",
+                  year: "2022–Date (Contract)",
                   title: "Software Engineer — Oneway",
                   desc: "Developed backend services for scan-to-pay, inventory management, and POS integrations. Focused on secure, fast, and reliable transaction systems.",
                 },
@@ -200,7 +200,7 @@ export default function AboutPage() {
                 <motion.div
                   key={milestone.year}
                   {...sectionReveal}
-                  transition={{ ...sectionReveal.transition, delay: i * 0.18 }}
+                  transition={{ ...sectionReveal.transition, delay: i * 0.14 }}
                   className="relative mb-12 sm:mb-16 last:mb-0"
                 >
                   <div
@@ -230,7 +230,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* FINAL CTA - reduced on mobile */}
+        {/* FINAL CTA – compact on mobile */}
         <section className="py-16 sm:py-24 text-center">
           <motion.div {...sectionReveal} className="max-w-5xl mx-auto px-5">
             <h2 className="text-4xl sm:text-5xl font-black mb-6 bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
@@ -239,12 +239,22 @@ export default function AboutPage() {
             <p className="text-lg sm:text-xl text-gray-200 mb-8 sm:mb-12">
               If you need systems built with clarity, discipline, and long-term thinking — I’m ready.
             </p>
-            <a
-              href="/contact"
-              className="px-12 sm:px-16 py-5 sm:py-6 bg-gray-800 rounded-2xl text-xl sm:text-2xl font-bold hover:bg-gray-700 transition-colors"
-            >
-              Start a Conversation
-            </a>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-5 sm:gap-8">
+              <a
+                href="/contact"
+                className="px-10 sm:px-16 py-4 sm:py-6 bg-gray-800 hover:bg-gray-700 rounded-2xl text-base sm:text-2xl font-bold transition-colors duration-300"
+              >
+                Start a Conversation
+              </a>
+
+              <a
+                href="/projects"
+                className="px-10 sm:px-16 py-4 sm:py-6 border-2 border-gray-700 hover:bg-gray-800/40 rounded-2xl text-base sm:text-2xl font-bold transition-colors duration-300"
+              >
+                View Projects
+              </a>
+            </div>
           </motion.div>
         </section>
       </div>

@@ -25,7 +25,7 @@ import {
   SiGit,
 } from "react-icons/si";
 
-// Smooth Anchor Link (internal sections)
+// Smooth Anchor Link (unchanged)
 const SmoothAnchorLink = ({ to, children, className }) => {
   const handleClick = (e) => {
     e.preventDefault();
@@ -47,10 +47,10 @@ const SmoothAnchorLink = ({ to, children, className }) => {
 };
 
 export default function HomePage() {
-  // Smooth scrolling with Lenis
+  // Smooth scrolling - even faster feel
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.38,
+      duration: 1.12,           // ← even snappier (1.12–1.18 sweet spot for most)
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: false,
@@ -72,7 +72,6 @@ export default function HomePage() {
     };
   }, []);
 
-  // 3D Scroll-Lift Tech Grid (with mobile adjustment)
   const techRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: techRef,
@@ -91,21 +90,10 @@ export default function HomePage() {
     offset: isMobile ? ["start 100%", "start 35%"] : ["start 95%", "start 20%"],
   }).scrollYProgress;
 
-  const rotateXMobileAdjusted = isMobile 
-    ? useTransform(mobileOffset, [0, 1], [90, 0]) 
-    : rotateX;
-  
-  const yMobileAdjusted = isMobile 
-    ? useTransform(mobileOffset, [0, 1], [200, 0]) 
-    : y;
-  
-  const scaleMobileAdjusted = isMobile 
-    ? useTransform(mobileOffset, [0, 1], [0.8, 1]) 
-    : scale;
-  
-  const opacityMobileAdjusted = isMobile 
-    ? useTransform(mobileOffset, [0, 1], [0.3, 1]) 
-    : opacity;
+  const rotateXMobileAdjusted = isMobile ? useTransform(mobileOffset, [0, 1], [90, 0]) : rotateX;
+  const yMobileAdjusted = isMobile ? useTransform(mobileOffset, [0, 1], [200, 0]) : y;
+  const scaleMobileAdjusted = isMobile ? useTransform(mobileOffset, [0, 1], [0.8, 1]) : scale;
+  const opacityMobileAdjusted = isMobile ? useTransform(mobileOffset, [0, 1], [0.3, 1]) : opacity;
 
   const techItems = [
     { name: "React 19", icon: <SiReact className="text-5xl mb-4 text-cyan-400" /> },
@@ -130,7 +118,7 @@ export default function HomePage() {
 
   return (
     <div className="relative bg-gray-950 text-gray-100 overflow-hidden font-sans">
-      {/* BACKGROUND 3D */}
+      {/* BACKGROUND 3D - unchanged */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 140], fov: 75 }}>
           <color attach="background" args={["#0a0a0f"]} />
@@ -148,14 +136,14 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(31,41,55,0.15),transparent_70%)] pointer-events-none" />
       </div>
 
-      {/* HERO */}
       <div className="relative z-10">
+        {/* HERO */}
         <section className="relative min-h-screen flex items-center justify-center px-6 py-28">
           <div className="max-w-7xl mx-auto text-center">
             <motion.h1
               initial={{ opacity: 0, y: 90, scale: 0.88 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1.3, ease: "easeOut" }}
+              transition={{ duration: 0.95, ease: "easeOut" }} // faster
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-none mb-6 whitespace-nowrap"
             >
               <span className="bg-gradient-to-r from-gray-300 via-gray-100 to-gray-400 bg-clip-text text-transparent">
@@ -166,20 +154,20 @@ export default function HomePage() {
             <motion.p
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 1 }}
-              className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mt-8 leading-relaxed font-light tracking-wide"
+              transition={{ delay: 0.45, duration: 0.7 }} // much faster
+              className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mt-6 leading-relaxed font-light tracking-wide"
             >
               Electronic Engineer • Full-Stack Software Engineer • Blockchain Systems Builder
               <br className="hidden sm:block" />
               Designing resilient, high-scale systems trusted at global scale.
             </motion.p>
 
-            {/* HERO BUTTONS */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-14 z-10 relative">
+            {/* HERO BUTTONS – very compact on mobile */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mt-8 sm:mt-14 z-10 relative">
               <a
                 href="/docs"
                 data-lenis-ignore
-                className="px-12 py-6 text-xl font-semibold tracking-tight bg-gradient-to-r from-gray-700 to-gray-800 rounded-xl hover:scale-105 hover:shadow-xl hover:shadow-gray-900/40 transition-all duration-300 cursor-pointer"
+                className="px-7 sm:px-12 py-3.5 sm:py-6 text-base sm:text-xl font-semibold tracking-tight bg-gradient-to-r from-gray-700 to-gray-800 rounded-xl hover:scale-105 hover:shadow-xl hover:shadow-gray-900/40 transition-all duration-300 cursor-pointer"
               >
                 Explore Systems
               </a>
@@ -187,7 +175,7 @@ export default function HomePage() {
               <a
                 href="/projects"
                 data-lenis-ignore
-                className="px-12 py-6 text-xl font-semibold tracking-tight border-2 border-gray-600 text-gray-300 rounded-xl hover:bg-gray-900/50 hover:scale-105 transition-all duration-300 cursor-pointer"
+                className="px-7 sm:px-12 py-3.5 sm:py-6 text-base sm:text-xl font-semibold tracking-tight border-2 border-gray-600 text-gray-300 rounded-xl hover:bg-gray-900/50 hover:scale-105 transition-all duration-300 cursor-pointer"
               >
                 View Signature Projects
               </a>
@@ -195,7 +183,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* IMPACT MARQUEE */}
+        {/* IMPACT MARQUEE - unchanged */}
         <div className="overflow-hidden py-10 bg-gray-950/60 border-t border-b border-gray-800/50">
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
@@ -218,34 +206,34 @@ export default function HomePage() {
                 {stat}
               </span>
             ))}
-            {/* Duplicate for seamless loop */}
-            {[
-              "Node.js APIs @ 50k+ RPS",
-              "Django backends → 10M+ MAU",
-              "Real-time systems 1M+ concurrent",
-              "Optimized latency < 50ms p95",
-              "Zero-downtime migrations @ scale",
-              "Event-driven 500k+ msg/s",
-              "Horizontal scaling via K8s",
-              "40% faster queries via indexing",
-              "99.99% API uptime achieved",
-              "Monoliths to microservices success",
-            ].map((stat, i) => (
-              <span key={i + 10} className="text-xl md:text-2xl font-medium text-gray-500/80 tracking-wider">
-                {stat}
+            {/* Duplicate for loop */}
+            {[...Array(10)].map((_, i) => (
+              <span key={i + 100} className="text-xl md:text-2xl font-medium text-gray-500/80 tracking-wider">
+                {[
+                  "Node.js APIs @ 50k+ RPS",
+                  "Django backends → 10M+ MAU",
+                  "Real-time systems 1M+ concurrent",
+                  "Optimized latency < 50ms p95",
+                  "Zero-downtime migrations @ scale",
+                  "Event-driven 500k+ msg/s",
+                  "Horizontal scaling via K8s",
+                  "40% faster queries via indexing",
+                  "99.99% API uptime achieved",
+                  "Monoliths to microservices success",
+                ][i % 10]}
               </span>
             ))}
           </motion.div>
         </div>
 
-        {/* CORE TECHNOLOGY GRID */}
+        {/* CORE TECHNOLOGY GRID – very fast appearance */}
         <section id="projects" className="py-32 bg-gray-950/50 backdrop-blur-md border-t border-b border-gray-800">
           <div className="max-w-7xl mx-auto px-6">
             <motion.h2
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              transition={{ duration: 0.9 }}
+              transition={{ duration: 0.6 }} // very fast
               className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-8 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent tracking-tight leading-none"
             >
               Core Technologies I Master
@@ -255,7 +243,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              transition={{ duration: 0.9, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="text-center text-gray-400 mb-20 max-w-3xl mx-auto text-lg font-light tracking-wide leading-relaxed"
             >
               Selected for extreme performance, developer experience, and decade-long maintainability.
@@ -279,8 +267,8 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, rotateY: 0 }}
                   viewport={{ once: false }}
                   transition={{
-                    duration: 0.8,
-                    delay: index * 0.06,
+                    duration: 0.55,          // very quick
+                    delay: index * 0.025,    // tight stagger = fast grid reveal
                     ease: [0.16, 1, 0.3, 1],
                   }}
                   whileHover={{
@@ -302,34 +290,34 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FINAL CTA - reduced vertical padding on mobile */}
+        {/* FINAL CTA – compact buttons on mobile */}
         <section id="contact" className="py-24 md:py-40 text-center relative">
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.7 }}
             className="relative z-10 max-w-5xl mx-auto px-6"
           >
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent tracking-tight leading-tight">
               Let’s Architect Something Legendary
             </h2>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-16 font-light tracking-wide leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 font-light tracking-wide leading-relaxed">
               Scale • Resilience • Strategic Impact
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-8 justify-center">
+            <div className="flex flex-col sm:flex-row gap-5 sm:gap-8 justify-center">
               <a
                 href="/contact"
-                className="px-16 py-7 text-2xl font-semibold tracking-tight bg-gradient-to-r from-gray-700 to-gray-800 rounded-2xl shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300 cursor-pointer"
+                className="px-8 sm:px-16 py-4 sm:py-7 text-base sm:text-2xl font-semibold tracking-tight bg-gradient-to-r from-gray-700 to-gray-800 rounded-2xl shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300 cursor-pointer"
               >
                 Start The Conversation
               </a>
 
               <a
                 href="/projects"
-                className="px-16 py-7 text-2xl font-semibold tracking-tight border-2 border-gray-600 text-gray-300 rounded-2xl hover:bg-gray-900/50 hover:scale-105 transition-all duration-300 cursor-pointer"
+                className="px-8 sm:px-16 py-4 sm:py-7 text-base sm:text-2xl font-semibold tracking-tight border-2 border-gray-600 text-gray-300 rounded-2xl hover:bg-gray-900/50 hover:scale-105 transition-all duration-300 cursor-pointer"
               >
                 View Signature Projects
               </a>
