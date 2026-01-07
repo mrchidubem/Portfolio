@@ -4,22 +4,21 @@ import Lenis from "@studio-freight/lenis";
 import { Canvas } from "@react-three/fiber";
 import { Stars, Sparkles, Float, OrbitControls } from "@react-three/drei";
 
-// ── Same fade-up animation as final Homepage
-const fadeInUp = {
-  initial: { y: 60, opacity: 0 },
+// ── Fast & soft fade-in
+const fastFadeInUp = {
+  initial: { y: 40, opacity: 0 },
   whileInView: { y: 0, opacity: 1 },
-  viewport: { once: false, margin: "-80px", amount: 0.25 },
-  transition: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] },
+  viewport: { once: true, margin: "-120px" },
+  transition: { duration: 0.55, ease: "easeOut" },
 };
 
 export default function SecurityPage() {
-  // ── Same ultra-smooth Lenis
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.38,
+      duration: 1.05,           // ← maximum responsiveness
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      smoothTouch: false,
+      smoothTouch: true,
       syncTouch: true,
     });
 
@@ -56,8 +55,8 @@ export default function SecurityPage() {
   ];
 
   return (
-    <div className="relative bg-gray-950 text-gray-100 overflow-hidden">
-      {/* FIXED COSMIC BACKGROUND — Exact same as final Homepage */}
+    <div className="relative bg-gray-950 text-gray-100 overflow-hidden min-h-screen">
+      {/* FIXED COSMIC BACKGROUND */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 140], fov: 75 }}>
           <color attach="background" args={["#0a0a0f"]} />
@@ -104,11 +103,15 @@ export default function SecurityPage() {
       </div>
 
       {/* SCROLLABLE CONTENT */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-40">
-
-        {/* Hero */}
-        <motion.div {...fadeInUp} className="text-center mb-20">
-          <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-24 md:py-32">
+        {/* Hero – immediate appearance */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center mb-12 sm:mb-16"
+        >
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-4 sm:mb-6">
             Security & Compliance
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
@@ -117,47 +120,97 @@ export default function SecurityPage() {
         </motion.div>
 
         {/* Compliance Certifications */}
-        <motion.div {...fadeInUp} className="mb-20">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent">
+        <motion.div {...fastFadeInUp} className="mb-16 sm:mb-20">
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-8 sm:mb-10 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent">
             Certifications & Compliance
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
             {complianceItems.map((item, i) => (
               <motion.div
                 key={item.name}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 35 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-gray-900/70 backdrop-blur-md border border-gray-800/60 rounded-2xl p-8 text-center hover:border-gray-600/70 transition-all duration-300"
+                transition={{ delay: i * 0.03, duration: 0.5 }}
+                className={`
+                  group relative bg-gray-900/65 backdrop-blur-md 
+                  border border-gray-800/50 rounded-2xl p-6 sm:p-8 
+                  text-center transition-all duration-400 ease-out
+                  hover:bg-gray-900/80 hover:border-gray-600/70 
+                  hover:shadow-xl hover:shadow-black/30
+                `}
+                style={{
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  willChange: 'background-color, border-color, box-shadow',
+                }}
               >
-                <p className="text-lg font-bold text-gray-300 mb-2">{item.name}</p>
-                <p className="text-sm text-gray-400">{item.status}</p>
-                <p className="text-xs text-gray-500 mt-2">{item.year}</p>
+                <div className="relative z-10">
+                  <p className="text-lg sm:text-xl font-bold text-gray-200 mb-2 group-hover:text-white transition-colors">
+                    {item.name}
+                  </p>
+                  <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                    {item.status}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2 group-hover:text-gray-400 transition-colors">
+                    {item.year}
+                  </p>
+                </div>
+
+                <div
+                  className="
+                    absolute inset-0 bg-gradient-to-br from-white/5 to-transparent 
+                    opacity-0 group-hover:opacity-100 transition-opacity duration-500 
+                    pointer-events-none
+                  "
+                />
               </motion.div>
             ))}
           </div>
         </motion.div>
 
         {/* Security Features */}
-        <motion.div {...fadeInUp}>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-12 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent">
+        <motion.div {...fastFadeInUp}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-8 sm:mb-10 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent">
             Security Principles
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {securityFeatures.map((feature, i) => (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 35 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="group bg-gray-900/70 backdrop-blur-md border border-gray-800/60 rounded-2xl p-8 hover:border-gray-600/70 hover:shadow-xl hover:shadow-gray-900/30 transition-all duration-300"
+                transition={{ delay: i * 0.03, duration: 0.5 }}
+                className={`
+                  group relative bg-gray-900/65 backdrop-blur-md 
+                  border border-gray-800/50 rounded-2xl p-8 
+                  transition-all duration-400 ease-out
+                  hover:bg-gray-900/80 hover:border-gray-600/70 
+                  hover:shadow-xl hover:shadow-black/30
+                `}
+                style={{
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  willChange: 'background-color, border-color, box-shadow',
+                }}
               >
-                <h3 className="text-2xl font-bold text-gray-300 mb-4 group-hover:text-gray-200 transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-400 leading-relaxed">
-                  {feature.desc}
-                </p>
+                <div
+                  className="
+                    absolute inset-0 bg-gradient-to-br from-white/5 to-transparent 
+                    opacity-0 group-hover:opacity-100 transition-opacity duration-500 
+                    pointer-events-none
+                  "
+                />
+
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-bold text-gray-200 mb-4 group-hover:text-white transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                    {feature.desc}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -167,16 +220,22 @@ export default function SecurityPage() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.9, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mt-32 text-center"
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mt-20 sm:mt-28 text-center"
         >
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-4xl mx-auto">
             Security is the foundation of trust. We treat it with the same rigor as systems serving billions.
           </p>
           <a
             href="/contact"
-            className="inline-block bg-gradient-to-r from-gray-700 to-gray-800 px-16 py-7 rounded-2xl text-2xl font-bold shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300"
+            className="
+              inline-block bg-gradient-to-r from-gray-700 to-gray-800 
+              px-10 sm:px-16 py-5 sm:py-7 rounded-2xl 
+              text-lg sm:text-2xl font-bold shadow-xl shadow-gray-900/40 
+              hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 
+              transition-all duration-300
+            "
           >
             Discuss Security Requirements
           </a>

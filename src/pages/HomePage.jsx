@@ -47,10 +47,10 @@ const SmoothAnchorLink = ({ to, children, className }) => {
 };
 
 export default function HomePage() {
-  // Smooth scrolling - even faster feel
+  // Smooth scrolling
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.12,           // ← even snappier (1.12–1.18 sweet spot for most)
+      duration: 1.12,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: false,
@@ -137,13 +137,13 @@ export default function HomePage() {
       </div>
 
       <div className="relative z-10">
-        {/* HERO */}
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-28">
+        {/* HERO - mobile adjusted like About page */}
+        <section className="relative min-h-[90vh] flex items-center justify-center px-5 sm:px-6 py-16 sm:py-28 md:py-32 lg:py-40">
           <div className="max-w-7xl mx-auto text-center">
             <motion.h1
               initial={{ opacity: 0, y: 90, scale: 0.88 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.95, ease: "easeOut" }} // faster
+              transition={{ duration: 0.95, ease: "easeOut" }}
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-none mb-6 whitespace-nowrap"
             >
               <span className="bg-gradient-to-r from-gray-300 via-gray-100 to-gray-400 bg-clip-text text-transparent">
@@ -154,16 +154,16 @@ export default function HomePage() {
             <motion.p
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.7 }} // much faster
-              className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mt-6 leading-relaxed font-light tracking-wide"
+              transition={{ delay: 0.45, duration: 0.7 }}
+              className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto mt-4 sm:mt-6 leading-relaxed font-light tracking-wide"
             >
               Electronic Engineer • Full-Stack Software Engineer • Blockchain Systems Builder
               <br className="hidden sm:block" />
               Designing resilient, high-scale systems trusted at global scale.
             </motion.p>
 
-            {/* HERO BUTTONS – very compact on mobile */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mt-8 sm:mt-14 z-10 relative">
+            {/* HERO BUTTONS */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mt-8 sm:mt-12 z-10 relative">
               <a
                 href="/docs"
                 data-lenis-ignore
@@ -183,7 +183,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* IMPACT MARQUEE - unchanged */}
+        {/* IMPACT MARQUEE */}
         <div className="overflow-hidden py-10 bg-gray-950/60 border-t border-b border-gray-800/50">
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
@@ -206,7 +206,6 @@ export default function HomePage() {
                 {stat}
               </span>
             ))}
-            {/* Duplicate for loop */}
             {[...Array(10)].map((_, i) => (
               <span key={i + 100} className="text-xl md:text-2xl font-medium text-gray-500/80 tracking-wider">
                 {[
@@ -226,14 +225,14 @@ export default function HomePage() {
           </motion.div>
         </div>
 
-        {/* CORE TECHNOLOGY GRID – very fast appearance */}
+        {/* CORE TECHNOLOGY GRID */}
         <section id="projects" className="py-32 bg-gray-950/50 backdrop-blur-md border-t border-b border-gray-800">
           <div className="max-w-7xl mx-auto px-6">
             <motion.h2
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              transition={{ duration: 0.6 }} // very fast
+              transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-8 bg-gradient-to-r from-gray-400 to-gray-500 bg-clip-text text-transparent tracking-tight leading-none"
             >
               Core Technologies I Master
@@ -267,8 +266,8 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, rotateY: 0 }}
                   viewport={{ once: false }}
                   transition={{
-                    duration: 0.55,          // very quick
-                    delay: index * 0.025,    // tight stagger = fast grid reveal
+                    duration: 0.55,
+                    delay: index * 0.025,
                     ease: [0.16, 1, 0.3, 1],
                   }}
                   whileHover={{
@@ -290,7 +289,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FINAL CTA – compact buttons on mobile */}
+        {/* FINAL CTA */}
         <section id="contact" className="py-24 md:py-40 text-center relative">
           <motion.div
             initial={{ opacity: 0, y: 60 }}

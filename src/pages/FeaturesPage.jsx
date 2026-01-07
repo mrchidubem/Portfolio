@@ -57,7 +57,7 @@ const features = [
 export default function FeaturesPage() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.12, // ← ultra-smooth & responsive (same as all other pages)
+      duration: 1.12,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: true,
@@ -129,7 +129,7 @@ export default function FeaturesPage() {
 
       {/* SCROLLABLE CONTENT */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-40">
-        {/* Hero – forced one line */}
+        {/* Hero – font size reduced by one level, still one line */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -137,7 +137,7 @@ export default function FeaturesPage() {
           transition={{ duration: 0.85, ease }}
           className="text-center mb-20"
         >
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-6 whitespace-nowrap">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-6 whitespace-nowrap">
             Core Features
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
@@ -145,7 +145,7 @@ export default function FeaturesPage() {
           </p>
         </motion.div>
 
-        {/* Feature Cards – soft, stable hover (no transform jumping) */}
+        {/* Feature Cards – soft, stable hover */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <motion.div
