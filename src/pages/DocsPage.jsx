@@ -114,25 +114,25 @@ export default function DocsPage() {
       </div>
 
       {/* SCROLLABLE CONTENT */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 py-24 sm:py-32">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-80px", amount: 0.25 }}
           transition={{ duration: 0.9, ease }}
-          className="text-center mb-20"
+          className="text-center mb-16 sm:mb-20"
         >
-          <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-5 sm:mb-6 leading-tight tracking-tight">
             Documentation
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2 sm:px-0">
             Technical reference for developers building on or integrating with DubicVentures infrastructure.
           </p>
         </motion.div>
 
-        {/* Docs Cards Grid - exact same animation + hover as Projects cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Docs Cards Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <AnimatePresence mode="popLayout">
             {sections.map((section, index) => (
               <motion.a
@@ -144,7 +144,7 @@ export default function DocsPage() {
                 whileInView="visible"
                 viewport={{ once: false, margin: "-80px", amount: 0.3 }}
                 variants={cardVariants}
-                className="group relative rounded-3xl overflow-hidden border backdrop-blur-sm bg-gray-900/70 border-gray-800/50"
+                className="group relative rounded-3xl overflow-hidden border backdrop-blur-sm bg-gray-900/70 border-gray-800/50 min-h-[280px] flex flex-col"
                 whileHover={{
                   y: -16,
                   borderColor: 'rgba(75, 85, 99, 0.4)',
@@ -158,17 +158,17 @@ export default function DocsPage() {
                   <div className="absolute -inset-1 bg-gradient-to-br from-gray-700/10 via-transparent to-gray-800/10 blur-xl" />
                 </div>
 
-                <div className="p-10 flex flex-col h-full">
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-gray-300 transition-colors duration-500">
+                <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 group-hover:text-gray-300 transition-colors duration-500">
                     {section.title}
                   </h3>
-                  <p className="text-gray-400 text-lg flex-grow">
+                  <p className="text-gray-400 text-base sm:text-lg flex-grow">
                     {section.desc}
                   </p>
-                  <span className="mt-6 inline-block text-gray-400 group-hover:text-gray-300 font-medium flex items-center gap-1.5 transition-colors">
+                  <span className="mt-5 sm:mt-6 inline-block text-gray-400 group-hover:text-gray-300 font-medium flex items-center gap-1.5 transition-colors">
                     Explore
                     <motion.span
-                      className="text-lg"
+                      className="text-lg sm:text-xl"
                       whileHover={{ x: 6 }}
                       transition={{ duration: 0.4 }}
                     >
@@ -187,14 +187,14 @@ export default function DocsPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-80px", amount: 0.25 }}
           transition={{ duration: 0.9, ease }}
-          className="mt-20 text-center"
+          className="mt-16 sm:mt-20 text-center"
         >
-          <p className="text-xl text-gray-300 mb-8">
+          <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8">
             Need deeper integration guidance or custom architecture consulting?
           </p>
           <a
             href="/contact"
-            className="inline-block bg-gradient-to-r from-gray-700 to-gray-800 px-12 py-6 rounded-2xl text-xl font-bold shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300"
+            className="inline-block bg-gradient-to-r from-gray-700 to-gray-800 px-10 sm:px-12 py-5 sm:py-6 rounded-2xl text-lg sm:text-xl font-bold shadow-xl shadow-gray-900/40 hover:shadow-2xl hover:shadow-gray-800/60 hover:scale-105 transition-all duration-300"
           >
             Talk to Engineering
           </a>
