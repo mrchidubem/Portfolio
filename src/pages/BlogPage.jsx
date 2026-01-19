@@ -185,7 +185,7 @@ export default function BlogPage() {
           transition={{ duration: 0.9, ease }}
           className="text-center mb-32"
         >
-          <h1 className="text-6xl md:text-8xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-8 leading-tight">
+          <h1 className="text-5xl md:text-8xl font-black bg-gradient-to-r from-gray-400 via-gray-300 to-gray-500 bg-clip-text text-transparent mb-8 leading-tight">
             Intelligence Briefs
           </h1>
           <p className="text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
